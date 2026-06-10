@@ -1,0 +1,6 @@
+@SabemiWebhooks_HostAddress = http://localhost:5261
+
+GET {{SabemiWebhooks_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
