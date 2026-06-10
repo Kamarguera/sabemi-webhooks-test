@@ -46,15 +46,15 @@ export default function App() {
         </thead>
         <tbody>
           {eventos.map(e => (
-            <tr key={e.id} style={{ background: e.erro ? '#ffe0e0' : e.status === 'Sucesso' ? '#e0ffe0' : '#fff' }}>
+            <tr key={e.id} style={{ background: (e.erro || e.status === 'Erro') ? '#ffe0e0' : e.status === 'Sucesso' ? '#e0ffe0' : '#fff' }}>
               <td>{e.idTransacao}</td>
               <td>{e.idContrato}</td>
               <td>R$ {Number(e.valor).toFixed(2)}</td>
               <td>{new Date(e.dataPagamento).toLocaleDateString('pt-BR')}</td>
               <td>
-                {e.erro
-                  ? <span style={{ color: 'red' }}>⚠️ {e.status} — {e.erro}</span>
-                  : <span style={{ color: e.status === 'Sucesso' ? 'green' : 'orange' }}>{e.status}</span>}
+                {(e.erro || e.status === 'Erro')
+                  ? <span style={{ color: 'red' }}>⚠️ {e.status}{e.erro ? ` — ${e.erro}` : ''}</span>
+                  : <span style={{ color: 'green' }}>{e.status}</span>}
               </td>
               <td>{new Date(e.recebidoEm).toLocaleString('pt-BR')}</td>
               <td>{e.processado ? '✅' : '⏳'}</td>
