@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="SabemiWebhooks.Tests/SabemiWebhooks.Tests.csproj" />
+  <Project Path="SabemiWebhooks/SabemiWebhooks.csproj" />
+</Solution>

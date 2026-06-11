@@ -1,0 +1,20 @@
+services:
+  db:
+    image: postgres:16
+    container_name: sabemi-postgres
+    environment:
+      POSTGRES_DB: sabemi
+      POSTGRES_USER: sabemi
+      POSTGRES_PASSWORD: sabemi
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sabemi"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  pgdata:

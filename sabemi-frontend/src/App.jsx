@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react'
 
-const API = 'http://localhost:5261'
+const API = 'http://localhost:5000'
 
 
 export default function App() {
   const [eventos, setEventos] = useState([])
   const [filtroStatus, setFiltroStatus] = useState('')
   const [filtroContrato, setFiltroContrato] = useState('')
+  const [falhaApi, setFalhaApi] = useState(false)
 
   const buscar = () => {
     const params = new URLSearchParams()
@@ -14,7 +15,8 @@ export default function App() {
     if (filtroContrato) params.append('idContrato', filtroContrato)
     fetch(`${API}/webhooks/pagamentos?${params}`)
       .then(r => r.json())
-      .then(setEventos)
+      .then(d => { setEventos(d); setFalhaApi(false) })
+      .catch(() => setFalhaApi(true))
   }
 
   useEffect(() => { buscar(); const t = setInterval(buscar, 5000); return () => clearInterval(t) }, [filtroStatus, filtroContrato])
@@ -22,6 +24,12 @@ export default function App() {
   return (
     <div style={{ fontFamily: 'sans-serif', padding: 24 }}>
       <h1>Painel de Pagamentos — Sabemi</h1>
+
+      {falhaApi && (
+        <p style={{ background: '#ffe0e0', color: '#900', padding: 8, borderRadius: 4 }}>
+          ⚠️ Não foi possível conectar à API — verifique se o backend está rodando.
+        </p>
+      )}
 
       <div style={{ marginBottom: 16, display: 'flex', gap: 12 }}>
         <select value={filtroStatus} onChange={e => setFiltroStatus(e.target.value)}>
